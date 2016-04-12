@@ -7,7 +7,7 @@ Author: Jonas Cheng
 
 * What does a typical 3-tier architecture look like? 
     * Building blocks: a presentation layer, business logic layer, and database layer.
-![](Architectural_pattern_for_a_simple_three-tier_application.png)
+![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_a_simple_three-tier_application.png)
 * To make things more complicated, we have to take care of auto-scaling, caching, routing and many other tasks that add up to an organizations’ responsibilities.
 * A new way of using serverless architecture has emerged, and Amazon Web Services (AWS) is taking all right steps to make serverless architecture friendlier and more powerful.
 
@@ -35,7 +35,7 @@ To simplify the introduction, the introduction doesn't address authentication, a
     * AWS offfers API Gateway, and Lambda
 * Data tier
     * AWS offers a variety of data store services, such as: RDS, SynamoDB, ElastiCache, Redshift.
-![](Architectural_pattern_using_a_VPC.png)
+![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_using_a_VPC.png)
 
 ***
 
@@ -85,7 +85,7 @@ AWS API Gateway; it is pure HTTPS.
 
 # Mobile Backend
 
-![](Architectural_pattern_for_mobile_backend.png)
+![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_mobile_backend.png)
 
 * Presentation tier: A mobile application running on each user’s smartphone.
 * Logic tier: AWS API Gateway and AWS Lambda.
@@ -100,7 +100,7 @@ managed by Cognito, which provides integration with IAM for temporary user acces
 
 # Amazon S3 Hosted Website
 
-![](Architectural_pattern_for_a_static_website_hosted_on_Amazon_S3.png)
+![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_a_static_website_hosted_on_Amazon_S3.png)
 
 * Presentation tier: Static website content hosted in S3, distributed by CloudFront.
     * Hosting static website content on S3 is a cost-effective alternative to hosting content on server-based infrastructure.
