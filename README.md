@@ -1,73 +1,85 @@
 # Serverless Architecture with AWS
 Author: Jonas Cheng
 
-***
+---
 
 # Background
 
 * What does a typical 3-tier architecture look like? 
     * Building blocks: a presentation layer, business logic layer, and database layer.
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_a_simple_three-tier_application.png)
-* To make things more complicated, we have to take care of auto-scaling, caching, routing and many other tasks that add up to an organizations’ responsibilities.
+
+----
+
+* We have to take care of auto-scaling, caching, routing and many other tasks that add up to an organizations’ responsibilities.
+
+----
+
 * A new way of using serverless architecture has emerged, and Amazon Web Services (AWS) is taking all right steps to make serverless architecture friendlier and more powerful.
 
-***
+---
 
 # Why serverless architecture?
 
-* No operating systems to choose, secure, patch, or manage.
+* **Operating System** - no need to select, secure, configure, administer or patch the OS.
     * Servers require frequent refreshing with software to keep them up-to-date and bug-free.
-* No servers to right size, monitor, or scale out.
-* No risk to your cost by over-provisioning.
+* **Servers** - no cost risk of over-provisioning and no performance risk of under-provisioning.
     * A minimum number of servers are required to run the services to achieve HA.
-* No risk to your performance by under-provisioning.
-* This is not to say that there will be **no** servers involved. Users, developers, and organizations building their applications with popular frameworks can now focus on their applications, not their backend.
+* **Capacity** - no need to monitor utilization and scale capacity based on load.
+* **High Availability** – compute resources are available across multiple AZs.
 
-***
+----
+
+* This is not to say that there will be **NO** servers involved. Users, developers, and organizations building their applications with popular frameworks can now focus on their applications, not their backend.
+
+---
 
 # A transformation from 3-tier or N-tier
 
 To simplify the introduction, the introduction doesn't address authentication, authorization, networking and monitoring.
 
-* Presentation tier
-    * AWS offers S3
-* Business logic tier
-    * AWS offfers API Gateway, and Lambda
-* Data tier
-    * AWS offers a variety of data store services, such as: RDS, SynamoDB, ElastiCache, Redshift.
+* Presentation tier - AWS offers S3.
+* Business logic tier - AWS offfers API Gateway, and Lambda.
+* Data tier - AWS offers a variety of data store services, eg. RDS, SynamoDB, ElastiCache, Redshift.
+
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_using_a_VPC.png)
 
-***
+---
 
 # Business logic tier
 
-***
+----
 
-# What's AWS API Gateway
+# In a nutshell
 
-* A fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
-* Handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls, including traffic management, authorization and access control, monitoring, and API version management.
-* You can create an API that acts as a “front door” for applications to access data, business logic, or functionality from your back-end services.
-* You only pay when your APIs are in use and for the API calls you receive and the amount of data transferred out.
+* API Gateway
+    * Provides an HTTP API endpoint that is fully configurable. 
+    * Define the HTTP resources (like /user), the HTTP methods on that resources (like POST, GET, DELETE, ...) and the integration that should be called to process the request.
+* Lambda
+    * Run whatever logic is needed to answer the request. 
+    * The result of the Lambda function is returned by the API Gateway to the caller.
 
-***
+![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Request-Gateway-Lambda-DynamoDB-Flow.png)
 
-# What's AWS Lambda
+----
 
-* Allows arbitrary code written in any of the supported languages, NodeJS, JVM based, and Python to be triggered in response to an event.
-* Event can be one of serveral programmatic triggers that WS makes available, called an **[event source](http://docs.aws.amazon.com/lambda/latest/dg/intro-core-components.html#intro-core-components-event-sources)**.
-* AWS Lambda function can exist within the context of a typical web service, and it can be triggered
-directly by an HTTPS request. 
-    * Amazon API Gateway acts as the front door for your logic tier, you need to execute the logic behind those APIs.
-* You are charged based on the number of requests for your functions and the time your code executes. 
+# API Gateway & Lambda Internal
 
-***
+* API Gateway
+    * Exposes your Lambda function at an HTTP endpoint.
+    * Provides capabilities such as authorization, policy enforcement, rate limiting and data transformation as a service that is entirely managed by Amazon.
+* Lambda
+    * Ｗhere your application logic runs.
+    * Deploy your code here but **NO** need to specify the number of servers or size of the servers to run the code on.
+    
+![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/API-Gateway-Internals.png)
+
+---
 
 # Presentation tier
 
 * Mobile App: 
-    * In addition to integrating with custom business logic via
-AWS API Gateway and AWS Lambda, you could use [Amazon Cognito](https://aws.amazon.com/cognito/)
+    * In addition to integrating with custom business logic via API Gateway and Lambda, you could use [Amazon Cognito](https://aws.amazon.com/cognito/)
 as a mechanism to create and manage user identities.
 * Static website content (such as files hosted in Amazon S3): 
     * Enable your AWS API Gateway APIs to be cross-origin resource sharing
@@ -77,18 +89,18 @@ as a mechanism to create and manage user identities.
     * There is nothing unique or proprietary about how clients communicate with the APIs you create using
 AWS API Gateway; it is pure HTTPS.
 
-***
+---
 
 # Sample Architecture Patterns
 
-***
+----
 
 # Mobile Backend
 
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_mobile_backend.png)
 
 * Presentation tier: A mobile application running on each user’s smartphone.
-* Logic tier: AWS API Gateway and AWS Lambda.
+* Logic tier: API Gateway and Lambda.
     * The logic tier is globally distributed by the CloudFront distribution created as part
 of each AWS API Gateway API.
     * A set of Lambda functions can be specific to user/device identity management and authentication, and
@@ -96,7 +108,7 @@ managed by Cognito, which provides integration with IAM for temporary user acces
     * Other Lambda functions can define the core business logic for your mobile back end.
 * Data tier: The various data storage services can be leveraged as needed.
 
-***
+----
 
 # Amazon S3 Hosted Website
 
@@ -109,7 +121,7 @@ managed by Cognito, which provides integration with IAM for temporary user acces
     * Static web content hosted in S3 can directly integrate with API Gateway, which can be CORS compliant.
 * Data tier: The various data storage services can be leveraged as needed.
 
-***
+---
 
 # Take Away
 
@@ -118,11 +130,31 @@ managed by Cognito, which provides integration with IAM for temporary user acces
 * These services provide a HTTPS API front end for your clients and a secure environment within your VPC to execute business logic. 
 * This allows you to take advantage of many popular scenarios in which you can use these managed services instead of managing typical server-based infrastructure yourself.
 
-***
+---
+
+# Serverless Delivery Architecture
+
+
+* The software development discipline of **continuous delivery** has had a tremendous impact on decreasing the cost and risk of delivering changes while simultaneously increasing code quality by ensuring that software systems are always in a releasable state.
+
+----
+
+* However, when applying the tools and techniques that exist for this practice to serverless application frameworks and platforms, sometimes existing toolsets do not align well with these new approaches.
+
+---
 
 # Backup Slides
 
-***
+----
+
+# What's AWS API Gateway
+
+* A fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
+* Handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls, including traffic management, authorization and access control, monitoring, and API version management.
+* You can create an API that acts as a “front door” for applications to access data, business logic, or functionality from your back-end services.
+* You only pay when your APIs are in use and for the API calls you receive and the amount of data transferred out.
+
+----
 
 # AWS API Gateway Pricing
 
@@ -135,9 +167,44 @@ managed by Cognito, which provides integration with IAM for temporary user acces
 > [more details...](https://aws.amazon.com/api-gateway/pricing/?nc1=h_ls)
 > 
 
-***
+----
+
+# What's AWS Lambda
+
+* Allows arbitrary code written in any of the supported languages, NodeJS, JVM based, and Python to be triggered in response to an event.
+* Event can be one of serveral programmatic triggers that WS makes available, called an **[event source](http://docs.aws.amazon.com/lambda/latest/dg/intro-core-components.html#intro-core-components-event-sources)**.
+* AWS Lambda function can exist within the context of a typical web service, and it can be triggered
+directly by an HTTPS request. 
+    * Amazon API Gateway acts as the front door for your logic tier, you need to execute the logic behind those APIs.
+* You are charged based on the number of requests for your functions and the time your code executes. 
+
+> [Video: Introduction to AWS Lambda](https://youtu.be/eOBq__h4OJ4)
+> 
+
+----
+
+# AWS Lambda Pricing
+
+* You are charged for the total number of requests across all your functions. Lambda counts a request each time it starts executing in response to an event notification or invoke call, including test invokes from the console.
+* First 1 million requests per month are free.
+* $0.20 per 1 million requests thereafter ($0.0000002 per request)
+
+> [more details...](https://aws.amazon.com/lambda/pricing/)
+> 
+
+---
 
 # References
 
 * [AWS Serverless Multi-Tier Architectures](https://d0.awsstatic.com/whitepapers/AWS_Serverless_Multi-Tier_Architectures.pdf)
 * [Components of Amazon Serverless Architecture with Amazon API Gateway Part-1](http://cloudacademy.com/blog/components-of-amazon-serverless-architecture-with-amazon-api-gateway-part-1/)
+
+---
+
+# Serverless Examples
+
+* [SquirrelBin](https://aws.amazon.com/blogs/compute/the-squirrelbin-architecture-a-serverless-microservice-using-aws-lambda/)
+    * A Serverless Microservice Using AWS Lambda
+* [dromedary-serverless](https://github.com/stelligent/dromedary-serverless)
+    * This project deploys dromedary in AWS Lambda with API Gateway as the interface to demonstrate serverless architecture. 
+    * It also demonstrates the use of CodePipeline with Lambdas to continuously deliver changes made in the source code in a serverless manner.
