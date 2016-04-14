@@ -1,0 +1,49 @@
+{
+  "name": "calculator",
+  "runtime": "nodejs",
+  "description": "Serverless Lambda function for project: helloworld",
+  "customName": false,
+  "customRole": false,
+  "handler": "handler.handler",
+  "timeout": 6,
+  "memorySize": 1024,
+  "authorizer": {},
+  "custom": {
+    "excludePatterns": []
+  },
+  "endpoints": [
+    {
+      "path": "api/v1/calculator",
+      "method": "POST",
+      "type": "AWS",
+      "authorizationType": "none",
+      "authorizerFunction": false,
+      "apiKeyRequired": false,
+      "requestParameters": {},
+      "requestTemplates": "$${apiGatewayRequestTemplate}",
+      "responses": {
+        "400": {
+          "statusCode": "400"
+        },
+        "default": {
+          "statusCode": "200",
+          "responseParameters": {},
+          "responseModels": {},
+          "responseTemplates": {
+            "application/json": ""
+          }
+        }
+      }
+    }
+  ],
+  "events": [],
+  "environment": {
+    "SERVERLESS_PROJECT": "${project}",
+    "SERVERLESS_STAGE": "${stage}",
+    "SERVERLESS_REGION": "${region}"
+  },
+  "vpc": {
+    "securityGroupIds": [],
+    "subnetIds": []
+  }
+}

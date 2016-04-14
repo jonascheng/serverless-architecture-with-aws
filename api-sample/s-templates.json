@@ -1,0 +1,9 @@
+{
+  "apiGatewayRequestTemplate": {
+    "application/json": {
+      "httpMethod": "$context.httpMethod",
+      "mathExp": "$input.path('$.me')"
+    }
+  }
+}
+

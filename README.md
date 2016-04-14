@@ -120,13 +120,10 @@ managed by Cognito, which provides integration with IAM for temporary user acces
 
 ***
 
-## Serverless Delivery Architecture
+# CloudFormation - Infra-as-code
 
-* The software development discipline of **continuous delivery** has had a tremendous impact on decreasing the cost and risk of delivering changes while simultaneously increasing code quality by ensuring that software systems are always in a releasable state.
-
-![](Serverless_delivery_pipeline.png)
-
-* However, when applying the tools and techniques that exist for this practice to serverless application frameworks and platforms, sometimes existing toolsets do not align well with these new approaches.
+* CloudFormation gives developers an easy way to create and manage a collection of related AWS resources, provisioning and updating them in an orderly and predictable fashion.
+* Applying version control to your AWS infrastructure the same way you do with your software.
 
 ***
 
@@ -351,6 +348,132 @@ Wait until Serverless has finished and copy the generated GET URL from the termi
 
 ***
 
+* Create a calculator function
+
+```
+sls function create api/v1/calculator -r nodejs
+Serverless: For this new Function, would you like to create an Endpoint, Event, or just the Function?
+  > Create Endpoint
+    Create Event
+    Just the Function...
+Serverless: Successfully created function: "api/v1/calculator"
+```
+
+***
+
+* Code the logic
+
+The API expect a mathematical expressions as input parameter and response calculation result.
+Ex: POST https://[FQDN]/api/v1/calculator {"me":"1+1"}, and then response 2 as result.
+
+**cd** into **api/v1/calculator** directory where you want your code logic to be written.
+
+```
+npm install mathjs --save
+```
+
+Create **s-templates.json** with the following contents, this template is used for an endpoint's [API Gateway Mapping Template](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html). In a Serverless project, this information is specified in the **s-function.json** containing the endpoint.
+
+```
+{
+  "apiGatewayRequestTemplate": {
+    "application/json": {
+      "httpMethod": "$context.httpMethod",
+      "mathExp": "$input.params('me')"
+    }
+  }
+}
+```
+
+Revise **s-function.json** with the following contents.
+
+```
+...
+  "endpoints": [
+    {
+      "path": "api/v1/calculator",
+      "method": "POST",
+...
+      "requestTemplates": "$${apiGatewayRequestTemplate}",
+...
+
+```
+
+Code **handler.js** with the following contents.
+
+```
+'use strict';
+
+// load math.js
+var math = require('mathjs');
+
+function calculator(event, cb) {
+  console.log("mathExp: ", JSON.stringify(event.mathExp));
+
+  if (event.httpMethod === "POST" && event.mathExp.length>0) {
+    var response = {
+        result: math.eval(event.mathExp)
+    };
+
+    return cb(null, response);
+  }
+  return cb(null, {result: 0});
+};
+
+module.exports.handler = function(event, context) {
+  calculator(event, function(error, response) {
+    return context.done(error, response);
+  });
+};
+```
+
+Modify **event.json** for local testing.
+
+```
+{
+  "httpMethod": "POST",
+  "mathExp": "1+2+3+4+5"  
+}
+```
+
+Let’s test our calculator function locally before we deploy it to AWS.
+
+```
+sls function run calculator
+Serverless: Running calculator...  
+Serverless: -----------------  
+Serverless: Success! - This Response Was Returned:  
+Serverless: {
+    "result": 15
+}
+```
+
+Let’s deploy our API Gateway and Lambda function.
+
+```
+sls dash deploy
+Serverless: Select the assets you wish to deploy:
+    calculator
+      function - calculator
+      endpoint - api/v1/calculator - POST
+    - - - - -
+  > Deploy
+    Cancel
+
+Serverless: Deploying the specified functions in "jonas" to the following regions: ap-northeast-1  
+Serverless: ------------------------  
+Serverless: Successfully deployed the following functions in "jonas" to the following regions:   
+Serverless: ap-northeast-1 ------------------------  
+Serverless:   calculator (helloworld-calculator): arn:aws:lambda:ap-northeast-1:151145865037:function:helloworld-calculator:jonas  
+
+Serverless: Deploying endpoints in "jonas" to the following regions: ap-northeast-1  
+Serverless: Successfully deployed endpoints in "jonas" to the following regions:  
+Serverless: ap-northeast-1 ------------------------  
+Serverless:   POST - api/v1/calculator - https://0ze64htj5l.execute-api.ap-northeast-1.amazonaws.com/jonas/api/v1/calculator
+```
+
+***
+
 # Take Away
 
 * Build up server is just easy like creating a client application unless you don't know how to code.
@@ -403,6 +526,16 @@ directly by an HTTPS request.
 
 > [more details...](https://aws.amazon.com/lambda/pricing/)
 > 
+
+***
+
+## Serverless Delivery Architecture
+
+* The software development discipline of **continuous delivery** has had a tremendous impact on decreasing the cost and risk of delivering changes while simultaneously increasing code quality by ensuring that software systems are always in a releasable state.
+
+![](Serverless_delivery_pipeline.png)
+
+* However, when applying the tools and techniques that exist for this practice to serverless application frameworks and platforms, sometimes existing toolsets do not align well with these new approaches.
 
 ***
 
