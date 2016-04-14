@@ -1,29 +1,21 @@
 # Serverless Architecture with AWS
 Author: Jonas Cheng
 
----
+***
 
 # Background
-
-----
 
 * What does a typical 3-tier architecture look like? 
     * Building blocks: a presentation layer, business logic layer, and database layer.
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_a_simple_three-tier_application.png)
 
-----
-
 * We have to take care of auto-scaling, caching, routing and many other tasks that add up to an organizations’ responsibilities.
-
-----
 
 * A new way of using serverless architecture has emerged, and Amazon Web Services (AWS) is taking all right steps to make serverless architecture friendlier and more powerful.
 
----
+***
 
 # Why serverless architecture?
-
-----
 
 * **Operating System** - no need to select, secure, configure, administer or patch the OS.
     * Servers require frequent refreshing with software to keep them up-to-date and bug-free.
@@ -32,15 +24,13 @@ Author: Jonas Cheng
 * **Capacity** - no need to monitor utilization and scale capacity based on load.
 * **High Availability** – compute resources are available across multiple AZs.
 
-----
+***
 
 * This is not to say that there will be **NO** servers involved. Users, developers, and organizations building their applications with popular frameworks can now focus on their applications, not their backend.
 
----
+***
 
 # Transform from 3/N-tier
-
-----
 
 * Presentation tier - AWS offers S3.
 * Business logic tier - AWS offfers API Gateway, and Lambda.
@@ -48,11 +38,11 @@ Author: Jonas Cheng
 
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_using_a_VPC.png)
 
----
+***
 
 # Business logic tier
 
-----
+***
 
 ## In a nutshell
 
@@ -60,25 +50,19 @@ Author: Jonas Cheng
     * Provides an HTTP API endpoint that is fully configurable. 
     * Define the HTTP resources (like /user), the HTTP methods on that resources (like POST, GET, DELETE, ...) and the integration that should be called to process the request.
 
-----
-
 * Lambda
     * Run whatever logic is needed to answer the request. 
     * The result of the Lambda function is returned by the API Gateway to the caller.
 
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Request-Gateway-Lambda-DynamoDB-Flow.png)
 
-----
+***
 
 ## API Gateway & Lambda Internal
-
-----
 
 * API Gateway
     * Exposes your Lambda function at an HTTP endpoint.
     * Provides capabilities such as authorization, policy enforcement, rate limiting and data transformation as a service that is entirely managed by Amazon.
-
-----
 
 * Lambda
     * Ｗhere your application logic runs.
@@ -86,40 +70,34 @@ Author: Jonas Cheng
     
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/API-Gateway-Internals.png)
 
----
+***
 
 # Presentation tier
 
-----
+***
 
 * Mobile App: 
     * In addition to integrating with custom business logic via API Gateway and Lambda, you could use [Amazon Cognito](https://aws.amazon.com/cognito/)
 as a mechanism to create and manage user identities.
-
-----
 
 * Static website content (such as files hosted in Amazon S3): 
     * Enable your AWS API Gateway APIs to be cross-origin resource sharing
 (CORS)-compliant.
     * This allows web browsers to directly invoke your APIs from within the static web pages.
 
-----
-
 * Any other HTTPS-enabled client device: 
     * There is nothing unique or proprietary about how clients communicate with the APIs you create using
 AWS API Gateway; it is pure HTTPS.
 
----
+***
 
 # Sample Architecture Patterns
 
-----
+***
 
 ## Mobile Backend
 
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_mobile_backend.png)
-
-----
 
 * Presentation tier: A mobile application running on each user’s smartphone.
 * Logic tier: API Gateway and Lambda.
@@ -128,13 +106,11 @@ managed by Cognito, which provides integration with IAM for temporary user acces
     * Other Lambda functions can define the core business logic for your mobile back end.
 * Data tier: The various data storage services can be leveraged as needed.
 
-----
+***
 
 ## S3 Hosted Websites
 
 ![](https://raw.githubusercontent.com/jonascheng/serverless-architecture-with-aws/master/img/Architectural_pattern_for_a_static_website_hosted_on_Amazon_S3.png)
-
-----
 
 * Presentation tier: Static website content hosted in S3, distributed by CloudFront.
     * Hosting static website content on S3 is a cost-effective alternative to hosting content on server-based infrastructure.
@@ -142,44 +118,38 @@ managed by Cognito, which provides integration with IAM for temporary user acces
     * Static web content hosted in S3 can directly integrate with API Gateway, which can be CORS compliant.
 * Data tier: The various data storage services can be leveraged as needed.
 
-----
+***
 
 ## Serverless Delivery Architecture
-
-----
 
 * The software development discipline of **continuous delivery** has had a tremendous impact on decreasing the cost and risk of delivering changes while simultaneously increasing code quality by ensuring that software systems are always in a releasable state.
 
 ![](Serverless_delivery_pipeline.png)
 
-----
-
 * However, when applying the tools and techniques that exist for this practice to serverless application frameworks and platforms, sometimes existing toolsets do not align well with these new approaches.
 
----
+***
 
 # Why Serverless Framework?
-
-----
 
 * While Lambda offers a powerful new way of developing/running applications, when we began building first project based on Lambda, you're realized structure was badly needed.
 * Managing all of the containers that Lambda introduces is a difficult task. 
 * Add to that multi-developer teams, multi-stage and multi-region support and you will quickly get into a messy situation.
 
-----
+***
 
 ## Overview
 
 * In the form of a Node.js command line interface that provides structure, automation and optimization to help you build and maintain Serverless apps. 
 * The CLI allows you to control your Lambdas, API Gateway Endpoints as well as your AWS resources via AWS CloudFormation. 
 
----
+***
 
 # First Serverless App
 
 We’ll create a simple “Hello world” like application and look at the stuff the Serverless framework does for us behind the scenes.
 
-----
+***
 
 * Prerequistions
     * AWS Account
@@ -187,16 +157,16 @@ We’ll create a simple “Hello world” like application and look at the stuff
     * Virtual Box
     * Git
 
-----
+***
 
 * Create an Administrative IAM User.
     * Login to your Amazon Web Services Account and go the the Identity & Access Management (IAM) Page.
-    * Click on **Users** and then Create New Users. Enter ***serverless-admin*** in the first field and click **Create**.
-    * View and copy the security credentials/API Keys in a safe place.
+    * Click on **Users** and then Create New Users. Enter **serverless-admin** in the first field and click **Create**.
+    * View and copy the Access Key ID and Secret Access Key in a safe place.
     * Look for **Managed Policies** on the **Permissions** tab and click **Attach Policy**. 
     * In the next screen, search for and select **AdministratorAccess** then click **Attach**.
 
-----
+***
 
 * To save your time, clone materials from Github.
 
@@ -204,16 +174,13 @@ We’ll create a simple “Hello world” like application and look at the stuff
 git clone https://github.com/jonascheng/serverless-architecture-with-aws.git
 ```
 
-----
-
 * Start NodeJS development environment.
 
 ```
 cd serverless-architecture-with-aws
 vagrant up
+vagrant ssh
 ```
-
-----
 
 * Install Serverless Framework.
 
@@ -221,31 +188,179 @@ vagrant up
 sudo npm install serverless -g
 ```
 
----
+***
+
+* Create a Serverless project
+
+    **cd** into the directory where you want your project to be created.
+
+```
+serverless project create
+```
+
+The Serverless CLI will ask for a few pieces of information about your project (name, domain, email...etc). 
+Serverless uses this information to build up your stack with [CloudFormation](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html).
+
+```
+Serverless: Enter a name for this project: (serverless-rkcjfc) helloworld
+Serverless: Enter a new stage name for this project: (dev) jonas
+Serverless: For the "jonas" stage, do you want to use an existing Amazon Web Services profile or create a new one?
+    Existing Profile
+  > Create A New Profile
+```
+
+Using stages is great because you can e.g. deploy your current code (which is under heavy development) to the development stage and tinker around while the production stage runs the latest stable version in production.
+
+Next up enter the ACCESS KEY ID and SECRET ACCESS KEY of our previously created serverless-admin user.
+
+```
+Serverless: Please enter the ACCESS KEY ID for your Admin AWS IAM User:
+Serverless: Enter the SECRET ACCESS KEY for your Admin AWS IAM User:
+Serverless: Enter the name of your new profile:  (helloworld_jonas)
+```
+
+Now we need to specify in which AWS region our code should be deployed. We’ll pick ap-northeast-1.
+
+```
+Serverless: Select a new region for your stage: 
+    us-east-1
+    us-west-2
+    eu-west-1
+    eu-central-1
+  > ap-northeast-1
+Serverless: Creating region "ap-northeast-1" in stage "jonas"...  
+Serverless: Deploying resources to stage "jonas" in region "ap-northeast-1" via Cloudformation (~3 minutes)...  
+Serverless: Successfully deployed "jonas" resources to "ap-northeast-1"  
+Serverless: Successfully created region "ap-northeast-1" within stage "jonas"  
+Serverless: Successfully created stage "jonas"  
+Serverless: Successfully initialized project "helloworld" 
+```
+
+Great. Now Serverless does it’s thing and generates everything project related for us. Next up it sets up the used AWS resources according to the auto generated CloudFormation template.
+
+***
+
+* Project Structure
+
+A basic Serverless project contains the following directory structure with some explanation:
+
+```
+s-project.json (project and author data)
+s-resources-cf.json (CloudFormation template for all stages/regions)
+admin.env (AWS Profiles - gitignored)
+_meta (meta data that holds stage/regions config and variables - gitignored)
+    |__resources (final CF templates for each stage/region)
+         |__s-resources-cf-dev-useast1.json
+    |__variables (variables specific to stages and regions)
+         |__s-variables-common.json
+         |__s-variables-dev.json
+         |__s-variables-dev-useast1.json
+```
+
+**admin.env** only stores profile name which refers to ~/.aws/credentials.
+
+> * What changed in CloudFormation?
+> * What changed in AWS IAM?
+
+***
+
+* Create first function
+
+    **cd** into **helloworld** directory where you want your function to be created.
+
+```
+sls function create
+```
+
+Serverless asks you some questions about your function you want to create. The first thing is the name. We call it **api/v1/greeter**.
+After that we need to specify which runtime we want to use. We’ll pick nodejs.
+
+```
+Serverless: Enter a new function name to be created in the CWD:  greeter
+Serverless: Please, select a runtime for this new Function
+  > nodejs
+    nodejs4.3
+    python2.7
+Serverless: For this new Function, would you like to create an Endpoint, Event, or just the Function?
+  > Create Endpoint
+    Create Event
+    Just the Function...
+Serverless: Successfully created function: "greeter"
+```
+
+Great. Serverless has created a new function and endpoint for us!
+
+***
+
+* Function Structure
+
+```
+greeter (your first function)
+    |__event.json (sample event for testing function locally)
+    |__handler.js (your function handler file)
+    |__s-function.json (data for your lambda function, endpoints and event sources)
+```
+    
+***
+
+* Test it locally and deployment
+
+Let’s test our newly created function locally before we deploy it to AWS.
+
+```
+sls function run greeter
+Serverless: Running greeter...  
+Serverless: -----------------  
+Serverless: Success! - This Response Was Returned:  
+Serverless: {
+    "message": "Go Serverless! Your Lambda function executed successfully!"
+}  
+```
+
+Let’s deploy our API Gateway and Lambda function. Open the deployment dashboard with the
+
+```
+sls dash deploy
+Serverless: Select the assets you wish to deploy:
+    greeter
+      function - greeter
+      endpoint - greeter - GET
+    - - - - -
+  > Deploy
+    Cancel
+
+Serverless: Deploying the specified functions in "jonas" to the following regions: ap-northeast-1  
+Serverless: ------------------------  
+Serverless: Successfully deployed the following functions in "jonas" to the following regions:   
+Serverless: ap-northeast-1 ------------------------  
+Serverless:   greeter (helloworld-greeter): arn:aws:lambda:ap-northeast-1:151145865037:function:helloworld-greeter:jonas  
+
+Serverless: Deploying endpoints in "jonas" to the following regions: ap-northeast-1  
+Serverless: Successfully deployed endpoints in "jonas" to the following regions:  
+Serverless: ap-northeast-1 ------------------------  
+Serverless:   GET - greeter - https://0ze64htj5l.execute-api.ap-northeast-1.amazonaws.com/jonas/greeter
+```
+
+Serverless will now minify, optimize and zip your Lambda function. Then they will be uploaded to the S3 bucket. An API Gateway endpoint will be created and connected to the Lambda function.
+
+Wait until Serverless has finished and copy the generated GET URL from the terminal output. Open up a browser with this link and see how your first Lambda function is executed in the AWS cloud.
+
+> * What changed in S3?
+> * What changed in Lambda?
+> * What changed in API Gateway?
+
+***
 
 # Take Away
 
-----
+* Build up server is just easy like creating a client application unless you don't know how to code.
+* Deligate server management to AWS, and focus on business requirements.
 
-* The multi-tier architecture pattern encourages the best practice of creating application components that are easy to maintain, decoupled, and scalable. 
-
-----
-
-* When you create a logic tier where integration occurs via API Gateway and computation occurs within Lambda, you are on your way to realizing those goals while reducing the amount of effort to achieve them. 
-
-----
-
-* These services provide a HTTPS API front end for your clients and a secure environment within your VPC to execute business logic. 
-
-----
-
-* This allows you to take advantage of many popular scenarios in which you can use these managed services instead of managing typical server-based infrastructure yourself.
-
----
+***
 
 # Backup Slides
 
-----
+***
 
 ## What's API Gateway
 
@@ -253,7 +368,7 @@ sudo npm install serverless -g
 * Handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls, including traffic management, authorization and access control, monitoring, and API version management.
 * You can create an API that acts as a “front door” for applications to access data, business logic, or functionality from your back-end services.
 
-----
+***
 
 ## API Gateway Pricing
 
@@ -266,7 +381,7 @@ sudo npm install serverless -g
 > [more details...](https://aws.amazon.com/api-gateway/pricing/?nc1=h_ls)
 > 
 
-----
+***
 
 ## What's Lambda
 
@@ -278,7 +393,7 @@ directly by an HTTPS request.
 > [Video: Introduction to AWS Lambda](https://youtu.be/eOBq__h4OJ4)
 > 
 
-----
+***
 
 ## Lambda Pricing
 
@@ -289,7 +404,7 @@ directly by an HTTPS request.
 > [more details...](https://aws.amazon.com/lambda/pricing/)
 > 
 
----
+***
 
 # References
 
@@ -297,10 +412,12 @@ directly by an HTTPS request.
 * [AWS Serverless Multi-Tier Architectures](https://d0.awsstatic.com/whitepapers/AWS_Serverless_Multi-Tier_Architectures.pdf)
 * [Components of Amazon Serverless Architecture with Amazon API Gateway Part-1](http://cloudacademy.com/blog/components-of-amazon-serverless-architecture-with-amazon-api-gateway-part-1/)
 
-----
+***
 
 ## Serverless Examples
 
+* [teletext.io](https://teletext.io/)
+    * A serverless start-up, entirely built around AWS, but leveraging only the Amazon API Gateway, Lambda functions, DynamoDb, S3 and Cloudfront.
 * [SquirrelBin](https://aws.amazon.com/blogs/compute/the-squirrelbin-architecture-a-serverless-microservice-using-aws-lambda/)
     * A Serverless Microservice Using AWS Lambda
 * [dromedary-serverless](https://github.com/stelligent/dromedary-serverless)
