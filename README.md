@@ -1,5 +1,4 @@
 # Serverless Architecture with AWS
-Author: Jonas Cheng
 
 ***
 
@@ -349,7 +348,7 @@ The API expect a mathematical expressions as input parameter and response calcul
 Firstly, we leverage Math.js to evaluate a mathematical expressions instead of `eval`.
 
 ```
-cp ../../../package.json .
+npm init
 npm install mathjs --save
 ```
 
@@ -360,7 +359,7 @@ Create **s-templates.json** with the following contents, this template is used f
   "apiGatewayRequestTemplate": {
     "application/json": {
       "httpMethod": "$context.httpMethod",
-      "mathExp": "$input.params('me')"
+      "mathExp": "$input.path('$.me')"
     }
   }
 }
@@ -473,7 +472,7 @@ Serverless:   POST - api/v1/calculator - https://0ze64htj5l.execute-api.ap-north
 
 * [teletext.io](https://teletext.io/)
     * A serverless start-up, entirely built around AWS, but leveraging only the Amazon API Gateway, Lambda functions, DynamoDb, S3 and Cloudfront.
-* [SquirrelBin](https://aws.amazon.com/blogs/compute/the-squirrelbin-architecture-a-serverless-microservice-using-aws-lambda/)
+* [SquirrelBin](http://squirrelbin.com/#/)
     * A Serverless Microservice Using AWS Lambda
 * [dromedary-serverless](https://github.com/stelligent/dromedary-serverless)
     * This project deploys dromedary in AWS Lambda with API Gateway as the interface to demonstrate serverless architecture. 
