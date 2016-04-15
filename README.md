@@ -458,7 +458,7 @@ Serverless:   POST - api/v1/calculator - https://0ze64htj5l.execute-api.ap-north
 # Take Away
 
 * Build up server is just easy like creating a client application unless you don't know how to code.
-* Of course, you still need to build up the difference of architecture design between client and server application. 
+* Of course, you still need to know the difference of architecture design between client and server application. 
 * Deligate server management to AWS, and focus on business requirements.
 
 ***
